@@ -30,18 +30,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-        'mysql+pymysql://root:@localhost/data-dev?charset=utf8'
+        'mysql+pymysql://root:@localhost/data_dev'
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI') or \
-        'mysql+pymysql://root:@localhost/data-test?charset=utf8'
+        'mysql+pymysql://root:@localhost/data_test'
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
-        'mysql+pymysql://root:@localhost/data?charset=utf8'
+        'mysql+pymysql://root:@localhost/data'
 
 
 config = {

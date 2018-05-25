@@ -37,7 +37,7 @@ class Role(db.Model):
     #只有一个角色的default字段要设为True，其角色会被设为默认角色。
     default = db.Column(db.Boolean,default=False,index=True)
     permissions = db.Column(db.Integer)
-    users = db.Relationship('User',backref='role',lazy='dynamic')
+    users = db.relationship('User',backref='role',lazy='dynamic')
 
     #初始化角色权限为0
     def __init__(self,**kwargs):
@@ -120,7 +120,7 @@ class User(UserMixin,db.Model):
     member_since = db.Column(db.DateTime(),default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
-    posts = db.Relationship('Post',backref='author',lazy='dynamic')
+    posts = db.relationship('Post',backref='author',lazy='dynamic')
     '''
     lazy参数指定为joined，这个lazy模式可以实现立即从连接查询中加载相关对象。
     例如，如果某用户关注了100个用户，调用user.followed.all()后会返回一个列表，
@@ -130,7 +130,7 @@ class User(UserMixin,db.Model):
                                backref=db.backref('follower',lazy='joined'),
                                lazy='dynamic',
                                cascade='all,delete-orphan')
-    followers = db.relationship('Follow',foreign_key=[Follow.followed_id],
+    followers = db.relationship('Follow',foreign_keys=[Follow.followed_id],
                                 backref=db.backref('followed',lazy='joined'),
                                 lazy='dynamic',
                                 cascade='all,delete-orphan')
@@ -243,6 +243,9 @@ class User(UserMixin,db.Model):
             return False
         if data.get('change_email') != self.id:
             return False
+        new_email = data.get('new_email')
+        if new_email is None:
+            return False
         if self.query.filter_by(email=new_email).first() is not None:
             return False
         self.email = new_email
@@ -330,7 +333,7 @@ class Post(db.Model):
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime,default=datetime.utcnow,index=True)
-    author_id = db.Column(db.Integer,db.ForeignKey(users.id))
+    author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     comments = db.relationship('Comment',backref='post',lazy='dynamic')
 
     @staticmethod
@@ -357,7 +360,7 @@ class Post(db.Model):
     @staticmethod
     def from_json(json_post):
         body = json_post.get('body')
-        if body is None or body = '':
+        if body is None or body == '':
             raise ValidationError('post does not have a body')
         return Post(body=body)
     
@@ -372,7 +375,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime,index=True,default=datetime.utctime)
+    timestamp = db.Column(db.DateTime,index=True,default=datetime.utcnow)
     disabled = db.Column(db.Boolean)
     author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))

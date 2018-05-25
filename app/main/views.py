@@ -197,7 +197,7 @@ def followers(username):
         error_out=False
     )
     follows = [{'user':item.follower,'timestamp':item.timestamp}
-                for item im pagination.items]
+                for item in pagination.items]
     return render_template('followers.html',user=user,title='Followers of',
                             endpoint='.followers',pagination=pagination,
                             follows=follows)
