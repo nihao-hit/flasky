@@ -38,8 +38,11 @@
       <file leaf-file-name="_macros.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/templates/_macros.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="3" column="98" selection-start-line="3" selection-start-column="98" selection-end-line="3" selection-end-column="98" />
+            <state relative-caret-position="272">
+              <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+              <folding>
+                <element signature="e#819#827#1" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -290,6 +293,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -727,8 +731,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/_macros.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" column="98" selection-start-line="3" selection-start-column="98" selection-end-line="3" selection-end-column="98" />
+        <state relative-caret-position="272">
+          <caret line="21" column="16" lean-forward="true" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+          <folding>
+            <element signature="e#819#827#1" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
