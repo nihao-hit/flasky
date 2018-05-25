@@ -63,7 +63,7 @@ def register():
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
-        token = user.generete_confirmation_token()
+        token = user.generate_confirmation_token()
         send_email(user.email,'Confirm your account',
                     'auth/email/confirm',user=user,token=token)
         flash('A confirmation email has been seent to you by email.')
