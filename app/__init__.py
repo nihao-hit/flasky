@@ -5,8 +5,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_pagedown import PageDown
-from .config import config
-
+from config import config
 
 '''
 因为app动态创建，而flask扩展在创建app之前被使用，
@@ -42,5 +41,8 @@ def create_app(config_name):
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
+
+    from .api import api as api_v1_blueprint
+    app.register_blueprint(api_v1_blueprint)
 
     return app
