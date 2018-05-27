@@ -21,9 +21,9 @@
         <td>{{ moment(follow.timestamp).format('L') }}</td>
     </tr>
     {% endif %}
-    {% endblock %}
+    {% endfor %}
 </table>
 <div class="pagination">
-    {{ macros.magination_widget(pagination,endpoint,username=user.username) }}
+    {{ macros.pagination_widget(pagination,endpoint,username=user.username) }}
 </div>
 {% endblock %}

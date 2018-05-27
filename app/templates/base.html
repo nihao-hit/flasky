@@ -26,6 +26,9 @@
                 <li><a href="{{ url_for('main.index') }}">Home</a></li>
                 {% if current_user.is_authenticated %}
                 <li><a href="{{ url_for('main.user',username=current_user.username) }}">Profile</a></li>
+                {% if current_user.can(Permission.MODERATE) %}
+                <li><a href="{{ url_for('main.moderate') }}">Moderate</a></li>
+                {% endif %}
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -33,7 +36,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ current_user.gravatar(size=18) }}">
-                        Account <b class="caret"/>
+                        Account <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
@@ -65,5 +68,5 @@
 
 {% block scripts %}
 {{ super() }}
-{{ moment.include_moment() }}
+{{moment.include_moment() }}
 {% endblock %}

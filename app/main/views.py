@@ -54,8 +54,8 @@ def show_followed():
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    page = request.args.get('page',1,tyep=int)
-    pagination = user.posts.order_by(Post.timestramp.desc()).paginate(
+    page = request.args.get('page',1,type=int)
+    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
         page,per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False
     )
@@ -79,7 +79,7 @@ def edit_profile():
     form.name.data = current_user.name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
-    return render_template('edit_prifile.html',form=form)
+    return render_template('edit_profile.html',form=form)
 
 
 @main.route('/edit_profile/<int:id>',methods=['GET','POST'])
@@ -122,11 +122,11 @@ def post(id):
         db.session.commit()
         flash('Your comment has been published.')
         return redirect(url_for('.post',id=post.id,page=-1))
-    page = request.args.get('page',1,tyep=int)
+    page = request.args.get('page',1,type=int)
     if page == -1:
         page = (post.comments.count() - 1) // \
             current_app.config['FLASKY_COMMENTS_PER_PAGE']+1
-    pagination = post.comments.order_by(Comment.timestramp.asc()).paginate(
+    pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
         page,per_page=current_app.config['FLASKY_COMMENTS_PER_PAGE'],
         error_out=False
     )
@@ -215,7 +215,7 @@ def followed_by(username):
         error_out=False
     )
     follows = [{'user':item.followed,'timestamp':item.timestamp}
-                for item in pagination.itmes]
+                for item in pagination.items]
     return render_template('followers.html',user=user,title='Followed by',
                             endpoint='.followed_by',pagination=pagination,
                             follows=follows)

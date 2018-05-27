@@ -1,8 +1,8 @@
 from random import randint
-from sqlalchemy.exc import IntegerityError
+from sqlalchemy.exc import IntegrityError
 from faker import Faker
 from . import db
-from .models import User,Post
+from .models import User,Post,Role
 
 def users(count=100):
     fake = Faker()
@@ -15,12 +15,13 @@ def users(count=100):
                  name=fake.name(),
                  location=fake.city(),
                  about_me=fake.text(),
-                 member_since=fake.past_date())
+                 member_since=fake.past_date(),
+                 role=Role.query.filter_by(name='Administrator').first())
         db.session.add(u)
         try:
             db.session.commit()
             i += 1
-        except IntegerityError:
+        except IntegrityError:
             db.session.rollback()
     
 def posts(count=100):
@@ -28,8 +29,8 @@ def posts(count=100):
     user_count = User.query.count()
     for i in range(count):
         u = User.query.offset(randint(0,user_count-1)).first()
-        p = post(body=fake.text(),
-                 timestramp=fake.past_date(),
-                 author=u)
+        p = Post(body=fake.text(),
+                 timestamp=fake.past_date(),
+                 author_id=u.id)
         db.session.add(p)
     db.session.commit()

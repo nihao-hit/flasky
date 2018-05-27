@@ -26,7 +26,7 @@ class EditProfileAdminForm(FlaskForm):
                                     'Username must have only letters,numbers,dots or'
                                     'underscores')])
     confirmed = BooleanField('Confirmed')
-    role = SelectField('Role',coerce=int,)
+    role = SelectField('Role',coerce=int)
     name = StringField('Real name',validators=[Length(0,64)])
     location = StringField('Location',validators=[Length(0,64)])
     about_me = TextAreaField('About me')

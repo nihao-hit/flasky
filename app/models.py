@@ -46,7 +46,7 @@ class Role(db.Model):
             self.permissions = 0
 
     @staticmethod
-    def insert_rolse():
+    def insert_roles():
         roles = {
             'User':[Permission.FOLLOW,Permission.COMMENT,Permission.WRITE],
             'Moderator':[Permission.FOLLOW,Permission.COMMENT,
@@ -60,7 +60,7 @@ class Role(db.Model):
             role = Role.query.filter_by(name=r).first()
             if role is None:
                 role = Role(name=r)
-            role.reset_permissions()
+            role.reset_permission()
             for perm in roles[r]:
                 role.add_permission(perm)
             role.default = (role.name == default_role)
@@ -80,7 +80,7 @@ class Role(db.Model):
         self.permissions = 0
 
     def has_permission(self,perm):
-        return self.permission & perm == perm
+        return self.permissions & perm == perm
 
     def __repr__(self):
         return '<Role {}>'.format(self.name)
@@ -97,6 +97,7 @@ class Follow(db.Model):
 
 class User(UserMixin,db.Model):
     '''
+    跟登陆有关的函数实现ping,
     跟关注有关的函数实现follow,unfollow,is_following,is_followed_by,
     跟密码有关的函数实现password,verify_password,reset_password
     跟认证有关的函数实现generate_confirmation_token,confirm,generate_reset_token
@@ -148,6 +149,10 @@ class User(UserMixin,db.Model):
             self.avatar_hash = self.gravatar_hash()
         self.follow(self)    
     
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
+
     #跟关注有关的函数实现
     @staticmethod
     def add_self_follows():
@@ -231,7 +236,7 @@ class User(UserMixin,db.Model):
 
     #跟修改邮箱有关的函数实现
     def generate_email_change_token(self,new_email,expiration=3600):
-        s = Serializer(current_app.config['SECRETE_KEY'],expiration)
+        s = Serializer(current_app.config['SECRET_KEY'],expiration)
         return s.dumps({'change_email':self.id,'new_email':new_email})\
             .decode('utf-8')
 
@@ -337,7 +342,7 @@ class Post(db.Model):
     comments = db.relationship('Comment',backref='post',lazy='dynamic')
 
     @staticmethod
-    def on_changed_body(target,value,oldvalue):
+    def on_changed_body(target,value,oldvalue,initiator):
         allowed_tags = ['a','abbr','acronym','b','blockquote','code',
                         'em','i','li','ol','pre','strong','ul','h1',
                         'h2','h3','p']

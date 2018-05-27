@@ -35,7 +35,7 @@ def unconfirmed():
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_mail(current_user.email,'Confirm Your Account',
+    send_email(current_user.email,'Confirm Your Account',
                 'auth/email/confirm',user=current_user,token=token)
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
@@ -76,7 +76,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and User.verify_password(form.password.data):
+        if user is not None and user.verify_password(form.password.data):
             login_user(user,remember=form.remember_me.data)
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
@@ -157,7 +157,7 @@ def change_email(token):
         flash('Your email address has been updated.')
     else:
         flash('Invalid request.')
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main/index'))
 
 
 @auth.route('/change_password',methods=['GET','POST'])
@@ -173,4 +173,4 @@ def change_password():
             return redirect(url_for('main.index'))
         else:
             flash('Invalid password.')
-    return render_template('auth.change_password.html',form=form)
+    return render_template('auth/change_password.html',form=form)
