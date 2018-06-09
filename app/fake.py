@@ -33,4 +33,4 @@ def posts(count=100):
                  timestamp=fake.past_date(),
                  author_id=u.id)
         db.session.add(p)
-    db.session.commit()
+    db.session.commit() 

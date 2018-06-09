@@ -13,7 +13,7 @@ class RegistrationForm(FlaskForm):
                             'Usernames must have only letters,numbers,dots or \
                             underscores')])
     password = PasswordField('Password',validators=[DataRequired(),
-                            EqualTo('password2',message='Passwords must match.')])
+                            EqualTo('password2',message='Password must match.')])
     password2 = PasswordField('Confirm password',validators=[DataRequired()])
     submit = SubmitField('Register')
 
@@ -61,6 +61,6 @@ class ChangeEmailForm(FlaskForm):
 class ChangePasswordForm(FlaskForm):
     old_password = PasswordField('Old password',validators=[DataRequired()])
     password = PasswordField('New password',validators=[DataRequired(),
-                            EqualTo('password2','Passwords must match.')])
+                            EqualTo('password2','Password must match.')])
     password2 = PasswordField('Confirm new password',validators=[DataRequired()])
     submit = SubmitField('Update Password')

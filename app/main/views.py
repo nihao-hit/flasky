@@ -120,7 +120,7 @@ def post(id):
                           author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
-        flash('Your comment has been published.')
+        flash('Your comment has been  published.')
         return redirect(url_for('.post',id=post.id,page=-1))
     page = request.args.get('page',1,type=int)
     if page == -1:

@@ -48,7 +48,7 @@ def confirm(token):
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
         db.session.commit()
-        flash('You have confimed your account. Thanks!')
+        flash('You have confirmed your account. Thanks!')
     else:
         flash('The confirmation link is invalid or has expired.')
     return redirect(url_for('main.index'))
@@ -66,7 +66,7 @@ def register():
         token = user.generate_confirmation_token()
         send_email(user.email,'Confirm your account',
                     'auth/email/confirm',user=user,token=token)
-        flash('A confirmation email has been seent to you by email.')
+        flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html',form=form)
 
@@ -152,7 +152,7 @@ def change_email_request():
 @auth.route('/change_email/<token>')
 @login_required
 def change_email(token):
-    if current_user.chane_email(token):
+    if current_user.change_email(token):
         db.session.commit()
         flash('Your email address has been updated.')
     else:
