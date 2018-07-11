@@ -5,7 +5,7 @@ from . import db
 from .models import User,Post,Role
 
 def users(count=100):
-    fake = Faker()
+    fake = Faker(locale='zh_CN')
     i = 0
     while i < count:
         u = User(email=fake.email(),
@@ -25,7 +25,7 @@ def users(count=100):
             db.session.rollback()
     
 def posts(count=100):
-    fake = Faker()
+    fake = Faker(locale='zh_CN')
     user_count = User.query.count()
     for i in range(count):
         u = User.query.offset(randint(0,user_count-1)).first()

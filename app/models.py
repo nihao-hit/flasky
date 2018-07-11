@@ -355,7 +355,7 @@ class Post(db.Model):
             'url':url_for('api.get_post',id=self.id),
             'body':self.body,
             'body_html':self.body_html,
-            'timestamp':self.timestrap,
+            'timestamp':self.timestamp,
             'author_url':url_for('api.get_user',id=self.author_id),
             'comments_url':url_for('api.get_post_comments',id=self.id),
             'comments_count':self.comments.count()

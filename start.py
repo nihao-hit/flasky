@@ -8,18 +8,32 @@ app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app,db)
 
 
+'''
 @app.shell_context_processor
 def make_shell_context():
     return dict(db=db,User=User,Follow=Follow,Role=Role,
                 Permission=Permission,Post=Post,Comment=Comment,users=users,posts=posts)
-            
-        
+'''
+
+
 @app.cli.command()
 def deploy():
     '''
-    Run deployment tasks.
+    部署命令
     '''
+    db.create_all()
 
     Role.insert_roles()
 
     User.add_self_follows()
+
+
+@app.cli.command()
+def fake():
+    '''
+    生成测试数据命令
+    :return:
+    '''
+    users()
+
+    posts()
